@@ -1,0 +1,67 @@
+{
+  "name": "podcast-host",
+  "version": "1.0.0",
+  "description": "Self-hosted podcast host: upload episodes, get an Apple/Spotify-valid RSS feed, public episode pages, an embeddable player, and download stats. Pay once, own it forever — no Transistor subscription.",
+  "author": "Ben (bensblueprints)",
+  "license": "MIT",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "node server/index.js",
+    "postinstall": "node scripts/setup-native.js",
+    "desktop": "electron .",
+    "test": "node test/smoke.js",
+    "dist": "electron-builder --win nsis"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.2.0",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "fast-xml-parser": "^5.0.0",
+    "marked": "^18.0.0",
+    "multer": "^1.4.5-lts.2",
+    "music-metadata": "^7.14.0",
+    "sharp": "^0.35.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.0",
+    "@vitejs/plugin-react": "^4.4.0",
+    "electron": "^33.4.0",
+    "electron-builder": "^25.1.8",
+    "ffmpeg-static": "^5.2.0",
+    "framer-motion": "^11.18.2",
+    "lucide-react": "^0.474.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^4.1.0",
+    "vite": "^6.3.5"
+  },
+  "build": {
+    "appId": "com.bensblueprints.castport",
+    "productName": "Castport",
+    "files": [
+      "electron/**",
+      "server/**",
+      "dist/**",
+      "vendor/**",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.productivity"
+    },
+    "directories": {
+      "output": "release"
+    }
+  }
+}

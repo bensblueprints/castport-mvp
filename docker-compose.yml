@@ -1,0 +1,16 @@
+services:
+  podcast-host:
+    build: .
+    ports:
+      - "5329:5329"
+    environment:
+      - PORT=5329
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - DATA_DIR=/data
+      - BASE_URL=${BASE_URL:-http://localhost:5329}
+    volumes:
+      - castport-data:/data
+    restart: unless-stopped
+
+volumes:
+  castport-data:
