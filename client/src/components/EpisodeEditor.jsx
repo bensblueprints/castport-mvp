@@ -11,6 +11,29 @@ function toLocalInput(iso) {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
+function EmbedSnippet({ episodeId }) {
+  const [copied, setCopied] = useState(false);
+  const snippet = `<iframe src="${location.origin}/embed/${episodeId}" width="100%" height="110" frameborder="0" title="Podcast player"></iframe>`;
+  return (
+    <div>
+      <div className="flex items-start gap-2">
+        <code className="flex-1 block text-xs bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-zinc-400 break-all">{snippet}</code>
+        <Button
+          variant="ghost"
+          onClick={() => {
+            navigator.clipboard.writeText(snippet);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1500);
+          }}
+        >
+          {copied ? 'Copied ✓' : 'Copy'}
+        </Button>
+      </div>
+      <p className="text-xs text-zinc-600 mt-2">Paste into any blog post or newsletter to embed this episode's player.</p>
+    </div>
+  );
+}
+
 export default function EpisodeEditor({ episodeId, onBack }) {
   const [ep, setEp] = useState(null);
   const [chapters, setChapters] = useState([]);
@@ -189,6 +212,12 @@ export default function EpisodeEditor({ episodeId, onBack }) {
           ))}
         </div>
       </Card>
+
+      {ep.audio_path && (
+        <Card title="Embeddable player">
+          <EmbedSnippet episodeId={ep.id} />
+        </Card>
+      )}
 
       <div className="flex items-center gap-3">
         <Button onClick={save} disabled={saving}>
